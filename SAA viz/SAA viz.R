@@ -3,13 +3,15 @@ require(dplyr)
 require(sf)
 require(ggimage)
 
-delta<-read_sf("~/ds586/ds586.gdb")%>%
-    mutate(Shape=st_cast(Shape, "POLYGON"))
+# From https://gis.data.cnra.ca.gov/datasets/57b02f8a5e77465f902376dbd9522585_0/about
+delta<-read_sf("SAA viz/i03_LegalDeltaBoundary")
 
 coords<-st_coordinates(deltamapr::WW_Delta)
 
 d <- #st_sample(delta, 300)%>%
-    st_make_grid(delta, n=c(20,20), square=F, what="centers", flat_topped=T)%>%
+    st_make_grid(delta, n=c(15,15), square=F, what="centers", flat_topped=T)%>%
+    st_as_sf()%>%
+    st_filter(delta)%>%
     st_coordinates()%>%
     as_tibble()%>%
     mutate(icon=sample(c('bed', 'fast-food', 'bus', 
