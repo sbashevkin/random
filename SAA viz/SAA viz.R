@@ -11,6 +11,7 @@ coords<-st_coordinates(deltamapr::WW_Delta)
 d <- #st_sample(delta, 300)%>%
     st_make_grid(delta, n=c(15,15), square=F, what="centers", flat_topped=T)%>%
     st_as_sf()%>%
+    st_jitter(factor = 0.007)%>%
     st_filter(delta)%>%
     st_coordinates()%>%
     as_tibble()%>%
@@ -21,7 +22,7 @@ d <- #st_sample(delta, 300)%>%
                          'beer', 'walk' ,'bed'), size=nrow(.), replace=T))
 
 ggplot()+
-    geom_icon(data=d, aes(x=X, y=Y, image=icon), color="chartreuse1")+
+    geom_icon(data=d, aes(x=X, y=Y, image=icon), color="limegreen", size=0.04)+
     #geom_sf(data=deltamapr::WW_Delta, color="dodgerblue4", fill="dodgerblue1", alpha=0.8)+
     geom_sf(data=delta, color="white", fill=NA)+
     theme_void()+
